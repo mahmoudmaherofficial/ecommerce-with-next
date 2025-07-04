@@ -1,16 +1,14 @@
-import React from "react";
+"use client";
 import "./header.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faBagShopping,
-  faCartShopping,
-  faHouse,
-  faRightToBracket,
-  faUserPlus,
-} from "@fortawesome/free-solid-svg-icons";
+import { faBagShopping, faCartShopping, faRightToBracket, faUserPlus } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const Header = () => {
+  const pathname = usePathname();
+  const isSignInPage = pathname.split("/")[1] === "signin";
+
   return (
     <header id="headerElement" className="flex">
       <Link href={"/"} className="logo">
@@ -40,7 +38,7 @@ const Header = () => {
           <span className="products-number">2</span>
         </Link>
 
-        <Link className="sign-in" href="/signin">
+        <Link className={`sign-in ${isSignInPage && "border"}`} href="/signin">
           <FontAwesomeIcon
             className="fa-solid fa-right-to-bracket"
             style={{
@@ -51,7 +49,7 @@ const Header = () => {
           Sign in
         </Link>
 
-        <Link className="register" href="/register">
+        <Link className={`register ${!isSignInPage && "border"}`} href="/register">
           <FontAwesomeIcon
             className="fa-solid fa-user-plus"
             style={{

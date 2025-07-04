@@ -7,7 +7,7 @@ const Footer = () => {
   return (
     <footer>
     Designed and developed by
-    <span> Mahmoud Maher </span>© 2024.
+    <span> Mahmoud Maher </span>© 2025.
   </footer>
   );
 }

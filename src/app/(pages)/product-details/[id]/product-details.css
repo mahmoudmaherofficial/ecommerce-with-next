@@ -1,3 +1,32 @@
+.prd-page header.flex {
+  background-color: var(--footer-bg);
+  color: var(--white);
+  padding-block: 0.6rem;
+
+  & .fa-solid {
+    color: var(--white);
+  }
+
+  & .logo .fa-solid {
+    font-size: 1.5rem;
+  }
+
+  & .sign-in:hover,
+  & .register:hover {
+    border: 1px solid rgb(152, 154, 189);
+    padding: 0.5rem 1.1rem;
+  }
+
+  & .cart:hover {
+    border: 1px solid rgb(152, 154, 189);
+    padding: 0.5rem 1.1rem 0.5rem 0.7rem;
+  }
+
+  & .logo:hover {
+    scale: 0.95;
+  }
+}
+
 .prd-page {
   height: 100vh;
   display: grid;
@@ -5,7 +34,7 @@
   grid-template-rows: auto 1fr auto;
 }
 
-main.flex {
+.prd-page main.flex {
   max-width: 800px;
   box-shadow: rgba(0, 0, 0, 0.2) 0px -1px 1px -1px,
     rgba(0, 0, 0, 0.14) 0px 1px 1px 0px, rgba(0, 0, 0, 0.12) 0px 1px 3px 0px;
@@ -49,7 +78,7 @@ main.flex {
 }
 
 @media (width < 800px) {
-  main.flex {
+  .prd-page main.flex {
     flex-wrap: wrap;
 
     & img {
@@ -57,7 +86,7 @@ main.flex {
       width: 260px;
     }
 
-    .product-details {
+    .prd-page .product-details {
       margin-top: 2.5rem;
       margin-bottom: 1.3rem;
     }

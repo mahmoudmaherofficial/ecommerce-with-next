@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCartPlus } from "@fortawesome/free-solid-svg-icons";
 import { notFound } from "next/navigation";
 import Image from "next/image";
-import { products } from "app/(home)/myProducts";
+import { products } from "app/(pages)/(home)/myProducts";
 
 // Function to get data from API
 // async function getProduct(id) {

@@ -19,7 +19,7 @@ export default function RegisterForm() {
     });
 
     if (response.ok) {
-      console.log('Account created');
+      e.target.reset();
     }
   };
   return (

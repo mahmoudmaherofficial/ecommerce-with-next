@@ -8,16 +8,27 @@ export async function POST(req) {
   console.log('*******************************');
   console.log(userData)
   console.log('*******************************');
+  const { name, email, password } = userData
 
   // 2. Connect to DB
   await connectMongoDB()
 
-  // 3. Save data to DB
-  const { name, email, password } = userData
+  // 4. Check if email exists
+  // @ts-ignore
+  const userExists = await UserModel.findOne({ email });
+  if (userExists) {
+    return NextResponse.json(
+      { error: "User already exists" },
+      { status: 409 }
+    );
+  }
+
+
+  // 4. Save data to DB
   // @ts-ignore
   await UserModel.create({ name, email, password })
 
 
-  // 4. Return response to frontend
+  // 5. Return response to frontend
   return NextResponse.json({})
 }

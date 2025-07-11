@@ -1,30 +1,28 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function RegisterForm() {
   const [name, setName] = useState(null);
   const [email, setEmail] = useState(null);
   const [password, setPassword] = useState(null);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   try {
-  //     const response = await fetch("api/register", {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify({ name, email, password }),
-  //     });
-  //     e.target.reset();
-  //   } catch (error) {
-  //     console.log("user already exists");
-  //   }
-  // };
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    setLoading(true);
+    setError(null);
+
     try {
+      if (!name || !email || !password) {
+        setError("All fields are required");
+        return;
+      }
+
       const response = await fetch("/api/register", {
         method: "POST",
         headers: {
@@ -34,24 +32,22 @@ export default function RegisterForm() {
       });
 
       const data = await response.json();
-
       if (!response.ok) {
         // Check specifically for "user already exists" error (409 status)
         if (response.status === 409 && data.error === "User already exists") {
-          alert("User already exists. Please use a different email.");
-        } else {
-          // Handle other errors generically
-          alert(data.error || "Registration failed");
+          setError("User already exists. Please use a different email.");
         }
         return;
       }
 
       // Success case
-      alert("Registration successful!");
       e.target.reset(); // Reset form on success
+      router.push("/signin");
     } catch (error) {
       // Handle network or unexpected errors
-      alert("An error occurred. Please try again later.");
+      setError("An error occurred. Please try again later.");
+    } finally {
+      setLoading(false);
     }
   };
   return (
@@ -91,15 +87,18 @@ export default function RegisterForm() {
           onChange={(prev) => setPassword(prev.target.value)}
         />
       </div>
-      <div className="mb-3 form-check">
-        <input type="checkbox" className="form-check-input" id="exampleCheck1" />
-        <label className="form-check-label" htmlFor="exampleCheck1">
-          Check me out
-        </label>
-      </div>
-      <button type="submit" className="btn btn-primary">
-        Create Account
+      <button type="submit" className="btn btn-primary" disabled={loading}>
+        {loading ? (
+          <div className="spinner-border text-light" style={{ width: "1rem", height: "1rem" }} role="status">
+            <span className="visually-hidden">Loading...</span>
+          </div>
+        ) : (
+          "Create account"
+        )}
       </button>
+      <p className="mt-3" style={{ color: "#ff7790" }}>
+        {error ? error : ""}
+      </p>
     </form>
   );
 }

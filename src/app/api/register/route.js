@@ -1,19 +1,17 @@
 import UserModel from "app/DBconfig/models/user";
 import { connectMongoDB } from "app/DBconfig/mongoDB";
 import { NextResponse } from "next/server"
+import bcrypt from 'bcrypt'
 
 export async function POST(req) {
   // 1. Recive data from frontend
   const userData = await req.json()
-  console.log('*******************************');
-  console.log(userData)
-  console.log('*******************************');
   const { name, email, password } = userData
 
   // 2. Connect to DB
   await connectMongoDB()
 
-  // 4. Check if email exists
+  // 3. Check if email exists
   // @ts-ignore
   const userExists = await UserModel.findOne({ email });
   if (userExists) {
@@ -23,12 +21,15 @@ export async function POST(req) {
     );
   }
 
+  // 4.Hashing password with bcrypt.js
+  const salt = await bcrypt.genSalt();
+  const hashedPassword = await bcrypt.hash(password, salt)
 
-  // 4. Save data to DB
+  // 5. Save data to DB
   // @ts-ignore
-  await UserModel.create({ name, email, password })
+  await UserModel.create({ name, email, password: hashedPassword })
 
 
-  // 5. Return response to frontend
+  // 6. Return response to frontend
   return NextResponse.json({})
 }

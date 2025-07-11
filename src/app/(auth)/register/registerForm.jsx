@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { toast } from "react-toastify";
 
 export default function RegisterForm() {
   const [name, setName] = useState(null);
@@ -18,11 +19,6 @@ export default function RegisterForm() {
     setError(null);
 
     try {
-      if (!name || !email || !password) {
-        setError("All fields are required");
-        return;
-      }
-
       const response = await fetch("/api/register", {
         method: "POST",
         headers: {
@@ -41,6 +37,7 @@ export default function RegisterForm() {
       }
 
       // Success case
+      toast.success("Account created successfully");
       e.target.reset(); // Reset form on success
       router.push("/signin");
     } catch (error) {
@@ -62,6 +59,7 @@ export default function RegisterForm() {
           id="username"
           aria-describedby="emailHelp"
           onChange={(prev) => setName(prev.target.value)}
+          required
         />
       </div>
       <div className="mb-4">
@@ -74,6 +72,7 @@ export default function RegisterForm() {
           id="exampleInputEmail1"
           aria-describedby="emailHelp"
           onChange={(prev) => setEmail(prev.target.value)}
+          required
         />
       </div>
       <div className="mb-4">
@@ -85,9 +84,10 @@ export default function RegisterForm() {
           className="form-control"
           id="exampleInputPassword1"
           onChange={(prev) => setPassword(prev.target.value)}
+          required
         />
       </div>
-      <button type="submit" className="btn btn-primary" disabled={loading}>
+      <button type="submit" className="btn btn-primary" disabled={loading || !name || !email || !password}>
         {loading ? (
           <div className="spinner-border text-light" style={{ width: "1rem", height: "1rem" }} role="status">
             <span className="visually-hidden">Loading...</span>

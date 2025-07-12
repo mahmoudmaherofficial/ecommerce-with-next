@@ -24,10 +24,12 @@ export default function SigninForm() {
         password,
         redirect: false,
       });
+
       if (!res.ok) {
         setError("Invalid email or password");
         return;
       }
+
       console.log("welcome");
     } catch (error) {
       setError("unknown error");

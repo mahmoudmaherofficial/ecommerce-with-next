@@ -16,13 +16,24 @@ export default function SigninForm() {
     setError(null);
     setIsLoading(true);
 
-    // sign in with email & password
-    // Go to api/auth/[...nextauth]/route.js
-    const res = await signIn("credentials", {
-      email,
-      password,
-      redirect: false,
-    });
+    try {
+      // sign in with email & password
+      // Go to api/auth/[...nextauth]/route.js
+      const res = await signIn("credentials", {
+        email,
+        password,
+        redirect: false,
+      });
+      if (!res.ok) {
+        setError("Invalid email or password");
+        return;
+      }
+      console.log("welcome");
+    } catch (error) {
+      setError("unknown error");
+    } finally {
+      setIsLoading(false);
+    }
   };
   return (
     <form onSubmit={handleSubmit} style={{ textAlign: "left" }}>

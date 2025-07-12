@@ -1,3 +1,4 @@
+"use client";
 import { Suspense } from "react";
 import Footer from "../../../components/footer/footer.jsx";
 import Header from "../../../components/header/header.jsx";
@@ -6,8 +7,13 @@ import Products from "./products.jsx";
 import Loading from "./loading.jsx";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleCheck } from "@fortawesome/free-solid-svg-icons";
+import { useSession } from "next-auth/react";
 
 export default function Home() {
+  const { data: session, status } = useSession();
+  if (status === "loading") {
+    return <Loading />;
+  }
   return (
     <>
       <div className="top-img">
@@ -28,9 +34,15 @@ export default function Home() {
           <FontAwesomeIcon icon={faCircleCheck} style={{ width: "2rem", marginRight: ".8rem" }} />
           Recommended for you
         </h1>
-        <Suspense fallback={<Loading />}>
-          <Products />
-        </Suspense>
+        {status === "authenticated" ? (
+          <Suspense fallback={<Loading />}>
+            <Products />
+          </Suspense>
+        ) : (
+          <p style={{ display: "flex", justifyContent: "center", fontSize: "1.5rem" }}>
+            You must sign in to see page content
+          </p>
+        )}
       </main>
 
       <Footer />

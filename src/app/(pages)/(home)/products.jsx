@@ -5,34 +5,7 @@ import Link from "next/link";
 
 import { products as data } from "./myProducts";
 
-// Images Array
-// const arr = [
-//   { productImg: "./images/1.png" },
-//   { productImg: "./images/2.webp" },
-//   { productImg: "./images/3.webp" },
-//   { productImg: "./images/4.webp" },
-//   { productImg: "./images/5.webp" },
-//   { productImg: "./images/6.webp" },
-//   { productImg: "./images/7.webp" },
-//   { productImg: "./images/8.png" },
-// ];
-
-// Fake DB Data
-// async function getData() {
-//   await new Promise((resolve) => setTimeout(resolve, 3000));
-//   const res = await fetch("http://localhost:5000/products", {
-//     next: { revalidate: 0 },
-//   });
-
-//   if (!res.ok) {
-//     return [];
-//   }
-//   return res.json();
-// }
-
 const Products = async () => {
-  // const data = await getData(); 
-
   if (!data || data.length === 0) {
     return <div>No products available</div>;
   }

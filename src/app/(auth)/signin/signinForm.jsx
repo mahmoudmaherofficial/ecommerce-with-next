@@ -1,9 +1,11 @@
 "use client";
-import { signIn } from "next-auth/react";
+import { signIn, signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function SigninForm() {
+  const { data: session, status } = useSession();
+
   const [email, setEmail] = useState(null);
   const [password, setPassword] = useState(null);
   const [error, setError] = useState(null);
@@ -30,13 +32,27 @@ export default function SigninForm() {
         return;
       }
 
-      console.log("welcome");
+      router.push('/')
     } catch (error) {
       setError("unknown error");
     } finally {
       setIsLoading(false);
     }
   };
+
+  if (status === "authenticated") {
+    return (
+      <div>
+        <p className="h1 text">
+          Signed in as <span className="text-warning">"{session.user.email}"</span>
+        </p>
+        <button className="btn btn-danger mt-3" onClick={() => signOut()}>
+          SignOut
+        </button>
+      </div>
+    );
+  }
+
   return (
     <form onSubmit={handleSubmit} style={{ textAlign: "left" }}>
       <div className="mb-4">

@@ -1,13 +1,15 @@
 "use client";
 import "./header.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBagShopping, faCartShopping, faRightToBracket, faUserPlus } from "@fortawesome/free-solid-svg-icons";
+import { faBagShopping, faCartShopping, faDoorOpen, faRightToBracket, faUserPlus } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { signOut, useSession } from "next-auth/react";
 
 const Header = () => {
   const pathname = usePathname();
   const isSignInPage = pathname.split("/")[1] === "signin";
+  const { data: session, status } = useSession();
 
   return (
     <header id="headerElement" className="flex">
@@ -38,27 +40,42 @@ const Header = () => {
           <span className="products-number">2</span>
         </Link>
 
-        <Link className={`sign-in ${isSignInPage && "border"}`} href="/signin">
-          <FontAwesomeIcon
-            className="fa-solid fa-right-to-bracket"
-            style={{
-              width: "0.8rem",
-            }}
-            icon={faRightToBracket}
-          />
-          Sign in
-        </Link>
+        {status === "unauthenticated" ? (
+          <>
+            <Link className={`sign-in ${isSignInPage && "border"}`} href="/signin">
+              <FontAwesomeIcon
+                className="fa-solid fa-right-to-bracket"
+                style={{
+                  width: "0.8rem",
+                }}
+                icon={faRightToBracket}
+              />
+              Sign in
+            </Link>
 
-        <Link className={`register ${!isSignInPage && "border"}`} href="/register">
-          <FontAwesomeIcon
-            className="fa-solid fa-user-plus"
-            style={{
-              width: "0.8rem",
-            }}
-            icon={faUserPlus}
-          />
-          Register
-        </Link>
+            <Link className={`register ${!isSignInPage && "border"}`} href="/register">
+              <FontAwesomeIcon
+                className="fa-solid fa-user-plus"
+                style={{
+                  width: "0.8rem",
+                }}
+                icon={faUserPlus}
+              />
+              Register
+            </Link>
+          </>
+        ) : (
+          <button className={`sign-in`} onClick={() => signOut()}>
+            <FontAwesomeIcon
+              className="fa-solid fa-left-to-bracket"
+              style={{
+                width: "0.8rem",
+              }}
+              icon={faDoorOpen}
+            />
+            Sign Out
+          </button>
+        )}
       </nav>
     </header>
   );

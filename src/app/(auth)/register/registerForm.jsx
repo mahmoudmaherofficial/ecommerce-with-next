@@ -9,6 +9,7 @@ export default function RegisterForm() {
   const [email, setEmail] = useState(null);
   const [password, setPassword] = useState(null);
   const [error, setError] = useState(null);
+  const [pwdError, setPwdError] = useState(false);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
@@ -16,7 +17,20 @@ export default function RegisterForm() {
     e.preventDefault();
 
     setLoading(true);
+    setPwdError(false);
     setError(null);
+
+    // Check password strength
+    const regPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/;
+
+    if (!regPassword.test(password)) {
+      setPwdError(true);
+      setError(
+        "Password must be at least 8 characters with 1 uppercase, 1 lowercase, 1 special character and 1 numeric."
+      );
+      setLoading(false);
+      return;
+    }
 
     try {
       const response = await fetch("/api/register", {
@@ -85,6 +99,7 @@ export default function RegisterForm() {
           id="exampleInputPassword1"
           onChange={(prev) => setPassword(prev.target.value)}
           required
+          style={{ borderColor: pwdError && "#f00" }}
         />
       </div>
       <button type="submit" className="btn btn-primary" disabled={loading || !name || !email || !password}>

@@ -32,7 +32,7 @@ export default function SigninForm() {
         return;
       }
 
-      router.push('/')
+      router.push("/");
     } catch (error) {
       setError("unknown error");
     } finally {
@@ -84,7 +84,7 @@ export default function SigninForm() {
             <span className="visually-hidden">Loading...</span>
           </div>
         ) : (
-          "Create account"
+          "Sign In"
         )}
       </button>
       <p className="mt-3" style={{ color: "#ff7790" }}>

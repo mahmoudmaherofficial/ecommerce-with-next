@@ -5,7 +5,8 @@ import Link from "next/link";
 
 import { products as data } from "./myProducts";
 
-const Products = async () => {
+const Products = () => {
+  
   if (!data || data.length === 0) {
     return <div>No products available</div>;
   }

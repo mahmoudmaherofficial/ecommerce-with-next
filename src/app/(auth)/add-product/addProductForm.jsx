@@ -22,17 +22,15 @@ export default function AddProductForm() {
     setError(null);
 
     try {
-      // const formData = new FormData();
-      // formData.append("image", image);
-      // formData.append("title", title);
-      // formData.append("price", price);
-      // formData.append("description", description);
-
-      const data = { title, description, price };
+      const formData = new FormData();
+      formData.append("image", image);
+      formData.append("title", title);
+      formData.append("price", price);
+      formData.append("description", description);
 
       const response = await fetch("/api/products", {
         method: "POST",
-        body: JSON.stringify(data),
+        body: formData,
       });
 
       // const data = await response.json();
@@ -53,71 +51,78 @@ export default function AddProductForm() {
   }
 
   return (
-      <form onSubmit={handleSubmit} style={{ textAlign: "left" }}>
-        <div className="mb-4">
-          <label htmlFor="productImage" className="form-label">
-            Product Image
-          </label>
-          <input type="file" className="form-control" id="productImage" required />
-        </div>
+    <form onSubmit={handleSubmit} style={{ textAlign: "left" }}>
+      <div className="mb-4">
+        <label htmlFor="productImage" className="form-label">
+          Product Image
+        </label>
+        <input
+          type="file"
+          className="form-control"
+          id="productImage"
+          accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp"
+          required
+          onChange={(e) => setImage(e.target.files[0])}
+        />
+      </div>
 
-        <div className="mb-4">
-          <label htmlFor="title" className="form-label">
-            Product Title
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            id="title"
-            placeholder="e.g. Apple iPhone 15"
-            onChange={(e) => setTitle(e.target.value)}
-            required
-          />
-        </div>
+      <div className="mb-4">
+        <label htmlFor="title" className="form-label">
+          Product Title
+        </label>
+        <input
+          type="text"
+          className="form-control"
+          id="title"
+          placeholder="e.g. Apple iPhone 15"
+          onChange={(e) => setTitle(e.target.value)}
+          required
+        />
+      </div>
 
-        <div className="mb-4">
-          <label htmlFor="price" className="form-label">
-            Product Price
-          </label>
-          <input
-            type="number"
-            className="form-control"
-            id="price"
-            placeholder="e.g. 999"
-            min="0"
-            step="0.01"
-            onChange={(e) => setPrice(e.target.value)}
-            required
-          />
-        </div>
+      <div className="mb-4">
+        <label htmlFor="price" className="form-label">
+          Product Price
+        </label>
+        <input
+          type="number"
+          className="form-control"
+          id="price"
+          placeholder="e.g. 999"
+          min="0"
+          step="0.01"
+          onChange={(e) => setPrice(e.target.value)}
+          required
+        />
+      </div>
 
-        <div className="mb-4">
-          <label htmlFor="desc" className="form-label">
-            Product Description
-          </label>
-          <textarea
-            name="desc"
-            id="desc"
-            rows={3}
-            className="form-control"
-            placeholder="Write a short description of the product"
-            onChange={(e) => setDescription(e.target.value)}
-          />
-        </div>
+      <div className="mb-4">
+        <label htmlFor="desc" className="form-label">
+          Product Description
+        </label>
+        <textarea
+          name="desc"
+          id="desc"
+          rows={3}
+          className="form-control"
+          placeholder="Write a short description of the product"
+          onChange={(e) => setDescription(e.target.value)}
+        />
+      </div>
 
-        <button type="submit" className="btn btn-primary" disabled={isLoading || !title || !price || !description}>
-          {isLoading ? (
-            <div className="spinner-border text-light" style={{ width: "1rem", height: "1rem" }} role="status">
-              <span className="visually-hidden">Loading...</span>
-            </div>
-          ) : (
-            "Create Product"
-          )}
-        </button>
+      <button type="submit" className="btn btn-primary" disabled={isLoading || !title || !price || !description}>
+        {isLoading ? (
+          <div className="spinner-border text-light" style={{ width: "1rem", height: "1rem" }} role="status">
+            <span className="visually-hidden">Loading...</span>
+          </div>
+        ) : (
+          "Create Product"
+        )}
+      </button>
 
-        <p className="mt-3" style={{ color: "#ff7790" }}>
-          {error || ""}
-        </p>
-      </form>
+      <p className="mt-3" style={{ color: "#ff7790" }}>
+        {error || ""}
+      </p>
+    </form>
   );
 }
